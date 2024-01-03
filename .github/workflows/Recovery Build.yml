@@ -152,11 +152,15 @@ jobs:
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
+    - name: Make tarball
+      run: |
+        tar -cJvf output.tar.xz out/
+
     - name: Upload output
       uses: actions/upload-artifact@v4
       with: 
-        name: Output directory
-        path: ${{ steps.pwd.outputs.workspace-folder }}/out
+        name: Outputs
+        path: ${{ steps.pwd.outputs.workspace-folder }}/output.tar.xz
         
     - name: Upload to Release
       uses: softprops/action-gh-release@v1
